@@ -5,4 +5,23 @@ sources:
     database: raw
     tables:
       - name: customers
+        columns:
+          - name: id
+            data_tests:
+              - unique
+              - not_null
       - name: orders
+        columns:
+          - name: id
+            data_tests:
+              - unique
+              - not_null
+        config:
+          freshness: 
+            error_after:
+              count: 12
+              period: hour
+            warn_after:
+              count: 1
+              period: day
+          
