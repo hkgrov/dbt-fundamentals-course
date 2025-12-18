@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='order_id'
+    )
+}}
+
 with orders as (
 
     select * from {{ ref('stg_jaffle_shop__orders') }}
@@ -15,7 +22,7 @@ order_payments as (
         order_id,
         sum(case when status = 'success' then amount end) as amount
     from payments
-        group by 1
+    group by 1
 ),
 
 final as (
@@ -32,3 +39,8 @@ final as (
 )
 
 select * from final
+{% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    where order_date >= (select max(order_date) from {{ this }}) 
+{% endif %}
+order by order_date desc
