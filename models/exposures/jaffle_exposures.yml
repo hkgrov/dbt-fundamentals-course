@@ -1,0 +1,11 @@
+exposures:
+  - name: orders_data
+    label: orders_data
+    type: notebook
+    maturity: high
+    depends_on:
+      - ref('fct_orders')
+    owner:
+      name: Haakon Grov
+      email: haakon.grov@webstep.no
+      
